@@ -227,3 +227,10 @@
         (concat (file-name-directory (buffer-file-name)) "cpp.md")
         nil nil nil nil nil)))
   (add-hook 'after-save-hook #'my/export-cpp-to-md))
+
+;; Org mindmap from krvkir
+(use-package! org-mindmap
+  :after org
+  :config
+  (add-hook 'org-mode-hook #'org-mindmap-mode)
+  (setq org-mindmap-default-paint-depth nil))

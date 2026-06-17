@@ -61,3 +61,5 @@
 (package! org-modern)
 (package! svg-tag-mode)
 (package! vertico-posframe)
+(package! org-mindmap
+  :recipe (:host github :repo "krvkir/org-mindmap"))
