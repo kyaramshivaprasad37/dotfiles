@@ -76,6 +76,7 @@
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
 (setq org-agenda-files '("~/org/todo.org"))
+(setq org-agenda-files'("~/org/"))
 (setq org-roam-directory (file-truename "~/org/roam"))
 (setq org-babel-python-command "python3")
 (setq org-babel-default-header-args:python'((:results . "output")))
@@ -113,7 +114,7 @@
            :target (file+head "%<%Y%m%d%H%M%S>-${slug}.org"
                               "#+title: ${title}\n")
            :unnarrowed t))))
-;; Tsoding-style C config
+;; C config
 (after! cc-mode
   (setq-default c-basic-offset 4
                 c-default-style '((java-mode . "java")
@@ -127,7 +128,7 @@
                          (add-to-list 'write-file-functions
                                       'delete-trailing-whitespace)))
 
-;; Multiple cursors (Tsoding style)
+;; Multiple cursors
 (after! multiple-cursors
   (global-set-key (kbd "C->") 'mc/mark-next-like-this)
   (global-set-key (kbd "C-<") 'mc/mark-previous-like-this)
@@ -137,7 +138,7 @@
 (global-set-key (kbd "C-c m s") 'magit-status)
 (global-set-key (kbd "C-c m l") 'magit-log)
 
-;; Move lines up/down like Tsoding
+;; Move lines up/down
 (global-set-key (kbd "M-p") 'move-text-up)
 (global-set-key (kbd "M-n") 'move-text-down)
 
@@ -147,6 +148,8 @@
     (kbd "k") 'previous-line
     (kbd "J") 'elfeed-goodies/next-entry-and-preview
     (kbd "K") 'elfeed-goodies/prev-entry-and-preview))
+
+;; Run condition for code blocks for C and CPP
 (after! org
   (map! :map org-mode-map
         :localleader
@@ -159,6 +162,19 @@
                  (vterm-other-window)
                  (vterm-send-string
                   (format "gcc %s -o /tmp/org_run && /tmp/org_run\n" tmpfile))))))
+
+(after! org
+  (map! :map org-mode-map
+        :localleader
+        "cc" (lambda ()
+               (interactive)
+               (let* ((info (org-babel-get-src-block-info))
+                      (code (nth 1 info))
+                      (tmpfile "/tmp/org_run.cpp"))
+                 (write-region code nil tmpfile)
+                 (vterm-other-window)
+                 (vterm-send-string
+                  (format "g++ %s -o /tmp/org_run && /tmp/org_run\n" tmpfile))))))
 
 ;;(after! treemacs
 ;;  (treemacs-add-project-to-workspace (expand-file-name "~/") "home"))
@@ -199,3 +215,15 @@
         vertico-posframe-parameters
         '((left-fringe . 8)
           (right-fringe . 8))))
+
+;; Markdown setup for CPP
+;; Markdown export for CPP org-roam file
+(with-eval-after-load 'org
+  (defun my/export-cpp-to-md ()
+    (when (and (eq major-mode 'org-mode)
+               (string-match-p "cpp\\.org$" (buffer-file-name)))
+      (require 'ox-md)
+      (org-export-to-file 'md
+        (concat (file-name-directory (buffer-file-name)) "cpp.md")
+        nil nil nil nil nil)))
+  (add-hook 'after-save-hook #'my/export-cpp-to-md))
