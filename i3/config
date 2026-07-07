@@ -4,7 +4,8 @@
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
 #
-
+new_window pixel 0 
+new_float pixel 0
 # i3 config file (v4)
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
@@ -58,6 +59,7 @@ bindsym Print exec xfce4-screenshooter
 
 # start a terminal
 bindsym $mod+Return exec kitty
+
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -196,3 +198,6 @@ bindsym $mod+r mode "resize"
 bar {
         status_command i3status
 }
+
+# feh waallpaper
+exec --no-startup-id feh --bg-fill ~/Pictures/1.jpg
