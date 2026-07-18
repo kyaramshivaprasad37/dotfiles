@@ -216,7 +216,6 @@
         '((left-fringe . 8)
           (right-fringe . 8))))
 
-;; Markdown setup for CPP
 ;; Markdown export for CPP org-roam file
 (with-eval-after-load 'org
   (defun my/export-cpp-to-md ()
@@ -248,3 +247,7 @@
 (after! evil-escape
   (setq evil-escape-key-sequence "jk"
         evil-escape-delay 0.25))
+
+(add-hook 'org-src-mode-hook #'display-line-numbers-mode)
+
+(setq display-line-numbers-type 'relative)
