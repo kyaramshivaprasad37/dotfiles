@@ -223,8 +223,8 @@
                (string-match-p "cpp\\.org$" (buffer-file-name)))
       (require 'ox-md)
       (org-export-to-file 'md
-        (concat (file-name-directory (buffer-file-name)) "cpp.md")
-        nil nil nil nil nil)))
+                          (concat (file-name-directory (buffer-file-name)) "cpp.md")
+                          nil nil nil nil nil)))
   (add-hook 'after-save-hook #'my/export-cpp-to-md))
 
 ;; Org mindmap from krvkir
@@ -251,3 +251,28 @@
 (add-hook 'org-src-mode-hook #'display-line-numbers-mode)
 
 (setq display-line-numbers-type 'relative)
+
+(map! :leader
+      :desc "Quickrun buffer" "c q" #'quickrun
+      :desc "Quickrun region" "c Q" #'quickrun-region)
+
+;; Rainbow delimiters everywhere code is written
+(add-hook 'prog-mode-hook #'rainbow-delimiters-mode)
+
+;; dap-mode: wire up gdb for C/C++ debugging
+(after! dap-mode
+  (require 'dap-gdb-lldb)
+  (dap-gdb-lldb-setup)
+  (setq dap-auto-configure-features '(sessions locals breakpoints expressions)))
+
+(use-package! leetcode
+  :config
+  (setq leetcode-prefer-language "cpp")
+  (setq leetcode-save-solutions t)
+  (setq leetcode-directory "~/DSA/leetcode")) ;; Change this path to wherever you store your files
+
+(map! :i "C-l" #'end-of-line)
+
+;; ">" automatic problem
+(after! smartparens
+  (sp-local-pair '(c++-mode c-mode) "<" ">" :actions nil))
