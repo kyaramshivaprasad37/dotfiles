@@ -1,0 +1,15 @@
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(elfeed-feeds
+   '("https://planet.emacslife.com/atom.xml" "https://archlinux.org/feeds/news/" "https://news.ycombinator.com/rss"))
+ '(org-agenda-files '("~/org/notes/notes/Gls.org"))
+ '(package-selected-packages '(ox-reveal)))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )
